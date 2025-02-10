@@ -12,7 +12,10 @@ class ClassBuilder:
 
     @classmethod
     def create_class(cls, class_name: str, attributes_name: List[str]) -> object:
-        def print_class(self):
+        def print_class(self, oneline: bool = False):
+            if oneline:
+                print(f"{self.__class__.__name__}: {vars(self)}")
+                return
             print(f"Class Name: {self.__class__.__name__}")
             print("Attributes:")
             for attr, value in vars(self).items():
@@ -34,12 +37,3 @@ class ClassBuilder:
         new_class["attributes"] = attributes_name
 
         return type(class_name, (object,), new_class)
-
-
-class CsvParser:
-    def __init__(self, file_path: str):
-        self.file_path = file_path
-
-    def read(self):
-        with open(self.file_path, "r") as file:
-            return file.read()
