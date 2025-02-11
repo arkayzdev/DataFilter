@@ -1,0 +1,7 @@
+{
+    "attributes": ["name", "age", "email"],
+    "data": [
+        {"name": "John Doe", "age": 30, "email": "john@example.com"},
+        {"name": "Jane Doe", "age": 25, "email": "jane@example.com"}
+    ]
+}
