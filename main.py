@@ -40,5 +40,5 @@ def test_json_to_class():
 
 
 if __name__ == "__main__":
-    test_csv_to_class()
+    # test_csv_to_class()
     test_json_to_class()
