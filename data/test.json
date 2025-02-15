@@ -1,0 +1,18 @@
+{
+  "data": [
+    {
+      "firstname": "John",
+      "lastname": "Doe",
+      "age": 25,
+      "apprentice": true,
+      "grades": [12, 14, 15]
+    },
+    {
+      "firstname": "Jane",
+      "lastname": "Smith",
+      "age": 30,
+      "apprentice": false,
+      "grades": [10, 11, 12]
+    }
+  ]
+}

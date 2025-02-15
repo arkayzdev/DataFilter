@@ -1,0 +1,16 @@
+<root>
+  <item>
+    <firstname>John</firstname>
+    <lastname>Doe</lastname>
+    <age>25</age>
+    <apprentice>True</apprentice>
+    <grades>12,14,15</grades>
+  </item>
+  <item>
+    <firstname>Jane</firstname>
+    <lastname>Smith</lastname>
+    <age>30</age>
+    <apprentice>False</apprentice>
+    <grades>10,11,12</grades>
+  </item>
+</root>
