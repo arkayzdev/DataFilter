@@ -6,14 +6,12 @@ class SortUtils:
     def sort_data(
         data: List[Dict[str, Any]], key: str, reverse: bool = False
     ) -> List[Dict[str, Any]]:
-        """Sort data by a specific key."""
         return sorted(data, key=lambda x: x[key], reverse=reverse)
 
     @staticmethod
     def sort_by_multiple_fields(
         data: List[Dict[str, Any]], keys: List[str], reverses: List[bool] = None
     ) -> List[Dict[str, Any]]:
-        """Sort data by multiple fields."""
         if reverses is None:
             reverses = [False] * len(keys)
         return sorted(

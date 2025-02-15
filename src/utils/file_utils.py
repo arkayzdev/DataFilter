@@ -3,7 +3,6 @@ import json
 import xml.etree.ElementTree as ET
 import yaml
 from abc import abstractmethod, ABC
-from dataclasses import dataclass
 from typing import Any, Dict, List
 
 
@@ -19,7 +18,6 @@ class FileUtils(ABC):
         pass
 
 
-@dataclass
 class CsvUtils(FileUtils):
     @classmethod
     def read_file(cls, file_path: str, delimiter: str = ",") -> Dict[str, Any]:
@@ -33,14 +31,13 @@ class CsvUtils(FileUtils):
 
     @classmethod
     def save_file(cls, file_path: str, data: List[Dict[str, Any]]) -> None:
-        with open(file_path, "w", newline="") as file:
+        with open(f"{file_path}.csv", "w", newline="") as file:
             writer = csv.writer(file)
             writer.writerow(data[0].keys())
             for item in data:
                 writer.writerow(item.values())
 
 
-@dataclass
 class JsonUtils(FileUtils):
     @classmethod
     def read_file(cls, file_path: str) -> Dict[str, Any]:
@@ -55,11 +52,10 @@ class JsonUtils(FileUtils):
 
     @classmethod
     def save_file(cls, file_path: str, data: List[Dict[str, Any]]) -> None:
-        with open(file_path, "w") as file:
+        with open(f"{file_path}.json", "w") as file:
             json.dump({"data": data}, file, indent=4)
 
 
-@dataclass
 class XmlUtils(FileUtils):
     @classmethod
     def read_file(cls, file_path: str) -> Dict[str, Any]:
@@ -82,10 +78,9 @@ class XmlUtils(FileUtils):
                 child = ET.SubElement(element, key)
                 child.text = str(value)
         tree = ET.ElementTree(root)
-        tree.write(file_path)
+        tree.write(f"{file_path}.xml")
 
 
-@dataclass
 class YamlUtils(FileUtils):
     @classmethod
     def read_file(cls, file_path: str) -> Dict[str, Any]:
@@ -100,5 +95,5 @@ class YamlUtils(FileUtils):
 
     @classmethod
     def save_file(cls, file_path: str, data: List[Dict[str, Any]]) -> None:
-        with open(file_path, "w") as file:
+        with open(f"{file_path}.yaml", "w") as file:
             yaml.dump({"data": data}, file)

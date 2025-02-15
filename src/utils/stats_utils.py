@@ -4,7 +4,6 @@ from typing import List, Dict, Any
 class StatsUtils:
     @staticmethod
     def _convert_value(value: Any) -> Any:
-        # Convert strings to integers, floats, booleans, or lists
         if isinstance(value, str):
             if value.isdigit():
                 return int(value)

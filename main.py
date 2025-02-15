@@ -1,44 +1,61 @@
-from src.models.class_builder import ClassBuilder
-from src.models.file_utils import CsvUtils, JsonUtils
+import os
+import sys
+
+from src.cli import CLI
 
 
-# TEST
+def main():
+    cli = CLI()
+    while True:
+        print("\nMenu:")
+        print("1. Load data")
+        print("2. Show statistics")
+        print("3. Filter data")
+        print("4. Sort data")
+        print("5. Save data")
+        print("6. Display data")
+        print("7. Exit")
+        choice = input("Enter your choice: ")
 
-
-def test_builder():
-    class_name = "Student"
-    attributes = ["firstname", "lastname", "age", "apprentice", "grades"]
-
-    Student: object = ClassBuilder.create_class(class_name, attributes)
-
-    a = ["Thierry", "H.", 30, True, [12, 10, 12]]
-    person_instance = Student(*a)
-
-    person_instance.print_class()
-
-
-def test_csv_to_class():
-    data = CsvUtils.read_file(file_path="data/test.csv")
-
-    obj_builder = ClassBuilder.create_class(
-        class_name="test", attributes_name=data["attributes"]
-    )
-
-    for d in data["data"]:
-        obj_builder(*d).print_class(oneline=True)
-
-
-def test_json_to_class():
-    data = JsonUtils.read_file(file_path="data/test.json")
-
-    obj_builder = ClassBuilder.create_class(
-        class_name="test", attributes_name=data["attributes"]
-    )
-
-    for d in data["data"]:
-        obj_builder(*d).print_class(oneline=True)
+        match choice:
+            case "1":
+                file_path = input("Enter file path: ")
+                if os.path.isfile(file_path):
+                    cli.load_data(file_path)
+                else:
+                    print("File not found, please retry.")
+            case "2":
+                cli.show_stats()
+            case "3":
+                cli.filter_data()
+            case "4":
+                cli.sort_data()
+            case "5":
+                try:
+                    folder_path = input("Enter folder path (for example data/sample): ")
+                    if not os.path.exists(folder_path):
+                        print("Folder not found, creating folder...")
+                        os.makedirs(folder_path)
+                    filename = input("Enter filename: ")
+                    file_type = input("Enter file type (csv, json, xml, yaml): ")
+                    cli.save_data(f"{folder_path}/{filename}", file_type)
+                except Exception as e:
+                    print(f"Error saving data ({e}), please retry.")
+            case "6":
+                cli.display_data()
+            case "7":
+                print("Exiting...")
+                sys.exit()
+            case _:
+                print("Invalid choice. Please try again.")
 
 
 if __name__ == "__main__":
-    # test_csv_to_class()
-    test_json_to_class()
+    try:
+        main()
+    except KeyboardInterrupt:
+        print("Exiting...")
+        exit(0)
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        exit(1)
