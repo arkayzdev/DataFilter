@@ -140,6 +140,7 @@ class CLI:
         key = input("Enter field to sort by: ")
         reverse = input("Sort in reverse order? (y/n): ").lower() == "y"
         self.data["data"] = SortUtils.sort_data(self.data["data"], key, reverse)
+        self.historical_data[self.cursor] = copy.deepcopy(self.data)
         print("Data sorted successfully.")
 
     def save_data(self, file_path: str, file_type: str):
