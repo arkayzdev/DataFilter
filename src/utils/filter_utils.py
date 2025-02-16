@@ -13,25 +13,36 @@ class FilterUtils:
         field: str, operator: str, value: Any
     ) -> Callable[[Dict[str, Any]], bool]:
         def condition(item: Dict[str, Any]) -> bool:
+            if operator in [">", "<", ">=", "<="]:
+                try:
+                    item_value = float(item[field])
+                    casted_value = float(value)
+                except ValueError:
+                    raise TypeError(
+                        f"Cannot compare {item[field]} with {value} using {operator}"
+                    )
+            else:
+                item_value = item[field]
+                casted_value = value
             match operator:
                 case "==":
-                    return item[field] == value
+                    return str(item_value) == str(casted_value)
                 case "!=":
-                    return item[field] != value
+                    return str(item_value) != str(casted_value)
                 case ">":
-                    return item[field] > value
+                    return item_value > casted_value
                 case "<":
-                    return item[field] < value
+                    return item_value < casted_value
                 case ">=":
-                    return item[field] >= value
+                    return item_value >= casted_value
                 case "<=":
-                    return item[field] <= value
+                    return item_value <= casted_value
                 case "contains":
-                    return value in item[field]
+                    return str(casted_value) in str(item[field])
                 case "starts_with":
-                    return item[field].startswith(value)
+                    return str(item[field]).startswith(str(casted_value))
                 case "ends_with":
-                    return item[field].endswith(value)
+                    return str(item[field]).endswith(str(casted_value))
                 case _:
                     raise ValueError(f"Unsupported operator: {operator}")
 

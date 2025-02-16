@@ -1,3 +1,3 @@
 firstname,lastname,age,apprentice,grades
-John,Doe,25,True,"12,14,15"
-Jane,Smith,30,False,"10,11,12"
+John,Doe,25,True,"[12.0, 14.0, 15.0]"
+Jane,Smith,30,False,"[10.0, 11.0, 12.0]"
