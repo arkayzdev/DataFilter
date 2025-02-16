@@ -19,6 +19,20 @@ class FileUtils(ABC):
 
 
 class CsvUtils(FileUtils):
+    @staticmethod
+    def _convert_value(value: str) -> Any:
+        if value.isdigit():
+            return int(value)
+        try:
+            return float(value)
+        except ValueError:
+            pass
+        if value.lower() in ("true", "false"):
+            return value.lower() == "true"
+        if value.startswith("[") and value.endswith("]"):
+            return [CsvUtils._convert_value(v.strip()) for v in value[1:-1].split(",")]
+        return value
+
     @classmethod
     def read_file(cls, file_path: str, delimiter: str = ",") -> Dict[str, Any]:
         with open(file_path, "r") as file:
@@ -26,7 +40,12 @@ class CsvUtils(FileUtils):
             attributes = reader[0]
             data = []
             for row in reader[1:]:
-                data.append({attr: value for attr, value in zip(attributes, row)})
+                data.append(
+                    {
+                        attr: cls._convert_value(value)
+                        for attr, value in zip(attributes, row)
+                    }
+                )
             return {"attributes": attributes, "data": data}
 
     @classmethod
@@ -45,13 +64,9 @@ class JsonUtils(FileUtils):
             reader = json.load(file)
             if "data" not in reader:
                 raise ValueError("Missing keys in JSON file: 'data'")
-            data = []
-            for item in reader["data"]:
-                data.append({key: str(value) for key, value in item.items()})
-
             return {
-                "attributes": list(data[0].keys()),
-                "data": data,
+                "attributes": list(reader["data"][0].keys()),
+                "data": reader["data"],
             }
 
     @classmethod
@@ -67,7 +82,7 @@ class XmlUtils(FileUtils):
         root = tree.getroot()
         data = []
         for item in root:
-            data.append({child.tag: str(child.text) for child in item})
+            data.append({child.tag: child.text for child in item})
         return {
             "attributes": list(data[0].keys()),
             "data": data,
@@ -92,13 +107,9 @@ class YamlUtils(FileUtils):
             reader = yaml.safe_load(file)
             if "data" not in reader:
                 raise ValueError("Missing keys in YAML file: 'data'")
-            data = []
-            for item in reader["data"]:
-                data.append({key: str(value) for key, value in item.items()})
-
             return {
-                "attributes": list(data[0].keys()),
-                "data": data,
+                "attributes": list(reader["data"][0].keys()),
+                "data": reader["data"],
             }
 
     @classmethod
