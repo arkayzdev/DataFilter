@@ -7,14 +7,7 @@ from src.cli import CLI
 def main():
     cli = CLI()
     while True:
-        print("\nMenu:")
-        print("1. Load data")
-        print("2. Show statistics")
-        print("3. Filter data")
-        print("4. Sort data")
-        print("5. Save data")
-        print("6. Display data")
-        print("7. Exit")
+        cli.show_main_menu()
         choice = input("Enter your choice: ")
 
         match choice:
@@ -27,7 +20,7 @@ def main():
             case "2":
                 cli.show_stats()
             case "3":
-                cli.filter_data()
+                cli.filter_cli()
             case "4":
                 cli.sort_data()
             case "5":
