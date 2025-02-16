@@ -45,9 +45,13 @@ class JsonUtils(FileUtils):
             reader = json.load(file)
             if "data" not in reader:
                 raise ValueError("Missing keys in JSON file: 'data'")
+            data = []
+            for item in reader["data"]:
+                data.append({key: str(value) for key, value in item.items()})
+
             return {
-                "attributes": list(reader["data"][0].keys()),
-                "data": reader["data"],
+                "attributes": list(data[0].keys()),
+                "data": data,
             }
 
     @classmethod
@@ -63,7 +67,7 @@ class XmlUtils(FileUtils):
         root = tree.getroot()
         data = []
         for item in root:
-            data.append({child.tag: child.text for child in item})
+            data.append({child.tag: str(child.text) for child in item})
         return {
             "attributes": list(data[0].keys()),
             "data": data,
@@ -88,9 +92,13 @@ class YamlUtils(FileUtils):
             reader = yaml.safe_load(file)
             if "data" not in reader:
                 raise ValueError("Missing keys in YAML file: 'data'")
+            data = []
+            for item in reader["data"]:
+                data.append({key: str(value) for key, value in item.items()})
+
             return {
-                "attributes": list(reader["data"][0].keys()),
-                "data": reader["data"],
+                "attributes": list(data[0].keys()),
+                "data": data,
             }
 
     @classmethod
