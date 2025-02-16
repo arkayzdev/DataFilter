@@ -17,7 +17,8 @@ class CLI:
         self.historical_data = []
         self.attributes = None
 
-    def show_main_menu(self):
+    @staticmethod
+    def show_main_menu():
         print("\nMenu:")
         print("1. Load data")
         print("2. Show statistics")
@@ -27,7 +28,8 @@ class CLI:
         print("6. Display data")
         print("7. Exit")
 
-    def show_cli_menu(self):
+    @staticmethod
+    def show_cli_menu():
         print("\nFilter menu:")
         print("1. Apply filter")
         print("2. Undo filter")
@@ -58,7 +60,7 @@ class CLI:
             return
         stats = StatsUtils.calculate_stats(self.data["data"])
         for key, values in stats.items():
-            print(f"Statistics for {key}:")
+            print(f"\nStatistics for {key}:")
             for stat, value in values.items():
                 print(f"  - {stat}: {value}")
 
@@ -164,5 +166,22 @@ class CLI:
         if not self.data:
             print("No data loaded.")
             return
+
+        column_widths = {attr: len(attr) for attr in self.attributes}
         for item in self.data["data"]:
-            print(item)
+            for attr in self.attributes:
+                column_widths[attr] = max(column_widths[attr], len(str(item[attr])))
+
+        header = "  |  ".join(
+            attr.ljust(column_widths[attr]) for attr in self.attributes
+        )
+        print(f"\n{header}")
+
+        separator = "  |  ".join("-" * column_widths[attr] for attr in self.attributes)
+        print(separator)
+
+        for item in self.data["data"]:
+            row = "  |  ".join(
+                str(item[attr]).ljust(column_widths[attr]) for attr in self.attributes
+            )
+            print(row)
