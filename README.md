@@ -69,7 +69,7 @@ $ python main.py
 # -> And now you should have a menu in the bash.
 ```
 
-## 💻 Usage
+## 🤖 Usage
 
 ### 1. Load data
 
